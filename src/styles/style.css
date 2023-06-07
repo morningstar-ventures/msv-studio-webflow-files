@@ -1,0 +1,15 @@
+/**
+ * OrbitControls
+ */
+.dg.ac {
+    position: fixed;
+    top: 0;
+    bottom: inherit;
+    left: inherit;
+    right: 0;
+    z-index: 1000;
+}
+
+.dg.ac .closed {
+    height: 0;
+}
