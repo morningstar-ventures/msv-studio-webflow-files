@@ -1,19 +1,19 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import * as dat from 'dat.gui'
 import { AdditiveBlending } from 'three'
+import * as dat from 'dat.gui'
 
-import './styles/style.css'
+import './styles/orbitControls.css'
+import './styles/app.css'
 
 /**
  * Base
  */
 // Debug
-const gui = new dat.GUI({
+/*const gui = new dat.GUI({
     width: 400,
     closed: true,
-
-})
+})*/
 
 const textureLoader = new THREE.TextureLoader()
 const shape = textureLoader.load('https://uploads-ssl.webflow.com/647fa9e68cb822c74d6ec016/647fbfd9250220d14fa29b84_1.png')
@@ -27,19 +27,33 @@ const scene = new THREE.Scene()
 //Galaxy Generator
 const parameters = {}
 
-parameters.count = 60000
-parameters.size = 0.01
+// Option 1
+/*parameters.count = 44200
+parameters.size = 0.015
 parameters.radius = 5
-parameters.branches = 8
+parameters.branches = 7
 parameters.spin = 1
-parameters.randomness = 0.3
+parameters.randomness = 0.4
 parameters.randomnessPower = 5
-parameters.stars = 9000
-parameters.starColor = '#1b3984'
-parameters.insideColor = '#ff6030'
-parameters.outsideColor = '#1b3984'
+parameters.stars = 4400
+parameters.starColor = '#3e3e3e'
+parameters.insideColor = '#989898'
+parameters.outsideColor = '#595959'*/
 
-gui.add(parameters, 'count').min(100).max(100000).step(100).onChange(generateGalaxy).name('stars in galaxy')
+// Option 2
+parameters.count = 44200
+parameters.size = 0.015
+parameters.radius = 5
+parameters.branches = 7
+parameters.spin = 1
+parameters.randomness = 0.4
+parameters.randomnessPower = 5
+parameters.stars = 4400
+parameters.starColor = '#60608e'
+parameters.insideColor = '#f56c4d'
+parameters.outsideColor = '#3c5389'
+
+/*gui.add(parameters, 'count').min(100).max(100000).step(100).onChange(generateGalaxy).name('stars in galaxy')
 gui.add(parameters, 'stars').min(0).max(100000).step(100).onChange(generateBgStars).name('background stars')
 gui.addColor(parameters, 'starColor').onChange(generateBgStars).name('color of stars')
 gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onChange(generateGalaxy).name('size of stars in galaxy')
@@ -49,8 +63,7 @@ gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(generateGalaxy).
 gui.add(parameters, 'randomness').min(0).max(2).step(0.01).onChange(generateGalaxy)
 gui.add(parameters, 'randomnessPower').min(1).max(10).step(1).onChange(generateGalaxy)
 gui.addColor(parameters, 'insideColor').onChange(generateGalaxy).name('color of core')
-gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy).name('color of branches')
-
+gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy).name('color of branches')*/
 
 let bgStarsGeometry = null
 let bgStarsMaterial = null
@@ -164,16 +177,26 @@ generateGalaxy()
 /**
  * Sizes
  */
+const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+const VH_VALUE = 123;
+const HEIGHT_In_PIXELS_VALUE = (VH_VALUE * VIEWPORT_HEIGHT) / 100;
+
+const QUARTER_HEIGHT = window.innerHeight / 4
 const sizes = {
     width: window.innerWidth,
-    height: window.innerHeight
+    height:  HEIGHT_In_PIXELS_VALUE,
+    //height: window.innerHeight + QUARTER_HEIGHT
 }
 
 window.addEventListener('resize', () =>
 {
+    const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const VH_VALUE = 123;
+    const HEIGHT_In_PIXELS_VALUE = (VH_VALUE * VIEWPORT_HEIGHT) / 100;
+
     // Update sizes
     sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
+    sizes.height = HEIGHT_In_PIXELS_VALUE
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
@@ -190,9 +213,10 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 3
-camera.position.y = 2
-camera.position.z = 4
+const INIT_CAMERA_POSITION_Y = 1.5
+camera.position.x = 2
+camera.position.y = 1.5
+camera.position.z = 3
 scene.add(camera)
 
 // Controls
@@ -210,27 +234,15 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor(0x1A1A1A); // Define a cor de fundo como vermelho
 
 /**
- * Animate in scroll
- */
-/*let scrollPos = camera.position.y;
-window.addEventListener("scroll", () => {
-    scrollPos =
-        (window.pageYOffset || document.scrollTop) -
-        (document.clientTop || 0) || 0;
-});*/
-
-/**
  * Animate
  */
 const clock = new THREE.Clock()
-
 
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
 
     //Update the camera
-    //camera.position.y = scrollPos * 0.055;
     points.rotation.y = elapsedTime*0.08
     bgStars.rotation.y = - elapsedTime*0.02
 
@@ -246,3 +258,23 @@ const tick = () =>
 
 tick()
 
+/**
+ * Animate in scroll
+ */
+window.addEventListener("scroll", (ev) => {
+    camera.position.y = INIT_CAMERA_POSITION_Y + window.scrollY / -270.0;
+});
+
+
+/**
+ * Parallax effect
+ */
+/*
+const multiplier = 0.2;
+window.addEventListener('scroll', () => {
+    const GalaxyHero = document.getElementById('heroText');
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    GalaxyHero.style.transform = `translateY(${scrollTop * multiplier}px)`;
+});
+
+*/
