@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AdditiveBlending } from 'three'
 import * as dat from 'dat.gui'
 
-import './styles/orbitControls.css'
+//import './styles/orbitControls.css'
 import './styles/app.css'
 
 /**
@@ -177,26 +177,24 @@ generateGalaxy()
 /**
  * Sizes
  */
-const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-const VH_VALUE = 123;
-const HEIGHT_In_PIXELS_VALUE = (VH_VALUE * VIEWPORT_HEIGHT) / 100;
+const getCanvasHeight = () => {
+    const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const VH_VALUE = 123;
+    return (VH_VALUE * VIEWPORT_HEIGHT) / 100;
+}
 
-const QUARTER_HEIGHT = window.innerHeight / 4
+
 const sizes = {
     width: window.innerWidth,
-    height:  HEIGHT_In_PIXELS_VALUE,
-    //height: window.innerHeight + QUARTER_HEIGHT
+    height:  getCanvasHeight,
 }
 
 window.addEventListener('resize', () =>
 {
-    const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-    const VH_VALUE = 123;
-    const HEIGHT_In_PIXELS_VALUE = (VH_VALUE * VIEWPORT_HEIGHT) / 100;
 
     // Update sizes
     sizes.width = window.innerWidth
-    sizes.height = HEIGHT_In_PIXELS_VALUE
+    sizes.height = getCanvasHeight
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
