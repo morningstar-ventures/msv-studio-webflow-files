@@ -1,20 +1,11 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { AdditiveBlending } from 'three'
-import * as dat from 'dat.gui'
 
-//import './styles/orbitControls.css'
 import './styles/app.css'
 
 /**
  * Base
  */
-// Debug
-/*const gui = new dat.GUI({
-    width: 400,
-    closed: true,
-})*/
-
 const textureLoader = new THREE.TextureLoader()
 const shape = textureLoader.load('https://uploads-ssl.webflow.com/647fa9e68cb822c74d6ec016/647fbfd9250220d14fa29b84_1.png')
 
@@ -178,23 +169,22 @@ generateGalaxy()
  * Sizes
  */
 const getCanvasHeight = () => {
-    const VIEWPORT_HEIGHT = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    const VIEWPORT_HEIGHT = window.innerHeight;
     const VH_VALUE = 123;
     return (VH_VALUE * VIEWPORT_HEIGHT) / 100;
 }
 
-
 const sizes = {
     width: window.innerWidth,
-    height:  getCanvasHeight,
+    height: window.innerHeight
+    //height:  getCanvasHeight(),
 }
 
-window.addEventListener('resize', () =>
-{
-
+window.addEventListener('resize', () =>  {
     // Update sizes
     sizes.width = window.innerWidth
-    sizes.height = getCanvasHeight
+    //sizes.height = getCanvasHeight()
+    sizes.height = window.innerHeight
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
@@ -211,15 +201,11 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-const INIT_CAMERA_POSITION_Y = 1.5
-camera.position.x = 2
-camera.position.y = 1.5
-camera.position.z = 3
+const INIT_CAMERA_POSITION_Y = 0.9
+camera.position.x = 1
+camera.position.y = INIT_CAMERA_POSITION_Y
+camera.position.z = 3.5
 scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
 
 /**
  * Renderer
@@ -227,25 +213,23 @@ controls.enableDamping = true
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
+
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0x1A1A1A); // Define a cor de fundo como vermelho
+renderer.setClearColor(0x1A1A1A);
 
 /**
  * Animate
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () =>  {
     const elapsedTime = clock.getElapsedTime()
 
     //Update the camera
     points.rotation.y = elapsedTime*0.08
     bgStars.rotation.y = - elapsedTime*0.02
 
-    // Update controls
-    controls.update()
 
     // Render
     renderer.render(scene, camera)
@@ -262,17 +246,3 @@ tick()
 window.addEventListener("scroll", (ev) => {
     camera.position.y = INIT_CAMERA_POSITION_Y + window.scrollY / -270.0;
 });
-
-
-/**
- * Parallax effect
- */
-/*
-const multiplier = 0.2;
-window.addEventListener('scroll', () => {
-    const GalaxyHero = document.getElementById('heroText');
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    GalaxyHero.style.transform = `translateY(${scrollTop * multiplier}px)`;
-});
-
-*/
