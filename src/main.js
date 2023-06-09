@@ -18,43 +18,18 @@ const scene = new THREE.Scene()
 //Galaxy Generator
 const parameters = {}
 
-// Option 1
-/*parameters.count = 44200
-parameters.size = 0.015
-parameters.radius = 5
-parameters.branches = 7
-parameters.spin = 1
-parameters.randomness = 0.4
-parameters.randomnessPower = 5
-parameters.stars = 4400
-parameters.starColor = '#3e3e3e'
-parameters.insideColor = '#989898'
-parameters.outsideColor = '#595959'*/
-
-// Option 2
-parameters.count = 44200
-parameters.size = 0.015
-parameters.radius = 5
-parameters.branches = 7
-parameters.spin = 1
-parameters.randomness = 0.4
-parameters.randomnessPower = 5
-parameters.stars = 4400
-parameters.starColor = '#60608e'
-parameters.insideColor = '#f56c4d'
-parameters.outsideColor = '#3c5389'
-
-/*gui.add(parameters, 'count').min(100).max(100000).step(100).onChange(generateGalaxy).name('stars in galaxy')
-gui.add(parameters, 'stars').min(0).max(100000).step(100).onChange(generateBgStars).name('background stars')
-gui.addColor(parameters, 'starColor').onChange(generateBgStars).name('color of stars')
-gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onChange(generateGalaxy).name('size of stars in galaxy')
-gui.add(parameters, 'radius').min(1).max(10).step(1).onChange(generateGalaxy).name('radius of galaxy')
-gui.add(parameters, 'branches').min(1).max(10).step(1).onChange(generateGalaxy).name('branches in galaxy')
-gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(generateGalaxy).name('spin of the galaxy')
-gui.add(parameters, 'randomness').min(0).max(2).step(0.01).onChange(generateGalaxy)
-gui.add(parameters, 'randomnessPower').min(1).max(10).step(1).onChange(generateGalaxy)
-gui.addColor(parameters, 'insideColor').onChange(generateGalaxy).name('color of core')
-gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy).name('color of branches')*/
+// Option
+parameters.count = 30500 // stars in galaxy
+parameters.stars = 3000 // background stars
+parameters.size = 0.012 // size of stars in galaxy
+parameters.radius = 5 // radius of galaxy
+parameters.branches = 6 // branches in galaxy
+parameters.spin = 1.1 // spin of the galaxy
+parameters.randomness = 0.1 // generateGalaxy
+parameters.starColor = '#5f5f5f' // color of stars
+parameters.randomnessPower = 5 // generateGalaxy
+parameters.insideColor = '#ca7d7d' // color of core
+parameters.outsideColor = '#5d688e' // color of branches
 
 let bgStarsGeometry = null
 let bgStarsMaterial = null
