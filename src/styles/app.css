@@ -29,8 +29,23 @@
 
 /* Elements */
 a.link-block {
-    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .boxshadow {
     box-shadow: 0px 126px 50px rgba(0, 0, 0, 0.02), 0px 71px 42px rgba(0, 0, 0, 0.08), 0px 31px 31px rgba(0, 0, 0, 0.13), 0px 8px 17px rgba(0, 0, 0, 0.15), 0px 0px 0px rgba(0, 0, 0, 0.16);
+}
+
+/*
+ * Our expertise
+ */
+.our-expertise-card {
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.our-expertise-card:hover {
+    background: rgba(36, 36, 36, 0.9);
+    border: 2px solid rgba(36, 36, 36, 0.9);
+}
+
+#get-in-touch-text {
+    user-select: none;
 }

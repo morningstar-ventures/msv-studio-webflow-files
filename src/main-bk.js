@@ -1,8 +1,5 @@
 import * as THREE from 'three'
 import { AdditiveBlending } from 'three'
-import { gsap } from "gsap";
-import initAnimations from './cards-animation'
-
 
 import './styles/app.css'
 
@@ -21,18 +18,43 @@ const scene = new THREE.Scene()
 //Galaxy Generator
 const parameters = {}
 
-// Option
-parameters.count = 30500 // stars in galaxy
-parameters.stars = 3000 // background stars
-parameters.size = 0.012 // size of stars in galaxy
-parameters.radius = 5 // radius of galaxy
-parameters.branches = 6 // branches in galaxy
-parameters.spin = 1.1 // spin of the galaxy
-parameters.randomness = 0.1 // generateGalaxy
-parameters.starColor = '#5f5f5f' // color of stars
-parameters.randomnessPower = 5 // generateGalaxy
-parameters.insideColor = '#fa9071' // color of core
-parameters.outsideColor = '#7c74bb' // color of branches
+// Option 1
+/*parameters.count = 44200
+parameters.size = 0.015
+parameters.radius = 5
+parameters.branches = 7
+parameters.spin = 1
+parameters.randomness = 0.4
+parameters.randomnessPower = 5
+parameters.stars = 4400
+parameters.starColor = '#3e3e3e'
+parameters.insideColor = '#989898'
+parameters.outsideColor = '#595959'*/
+
+// Option 2
+parameters.count = 44200
+parameters.size = 0.015
+parameters.radius = 5
+parameters.branches = 7
+parameters.spin = 1
+parameters.randomness = 0.4
+parameters.randomnessPower = 5
+parameters.stars = 4400
+parameters.starColor = '#60608e'
+parameters.insideColor = '#f56c4d'
+parameters.outsideColor = '#3c5389'
+
+/*gui.add(parameters, 'count').min(100).max(100000).step(100).onChange(generateGalaxy).name('stars in galaxy')
+gui.add(parameters, 'stars').min(0).max(100000).step(100).onChange(generateBgStars).name('background stars')
+gui.addColor(parameters, 'starColor').onChange(generateBgStars).name('color of stars')
+gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onChange(generateGalaxy).name('size of stars in galaxy')
+gui.add(parameters, 'radius').min(1).max(10).step(1).onChange(generateGalaxy).name('radius of galaxy')
+gui.add(parameters, 'branches').min(1).max(10).step(1).onChange(generateGalaxy).name('branches in galaxy')
+gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(generateGalaxy).name('spin of the galaxy')
+gui.add(parameters, 'randomness').min(0).max(2).step(0.01).onChange(generateGalaxy)
+gui.add(parameters, 'randomnessPower').min(1).max(10).step(1).onChange(generateGalaxy)
+gui.addColor(parameters, 'insideColor').onChange(generateGalaxy).name('color of core')
+gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy).name('color of branches')*/
 
 let bgStarsGeometry = null
 let bgStarsMaterial = null
@@ -146,9 +168,16 @@ generateGalaxy()
 /**
  * Sizes
  */
+const getCanvasHeight = () => {
+    const VIEWPORT_HEIGHT = window.innerHeight;
+    const VH_VALUE = 123;
+    return (VH_VALUE * VIEWPORT_HEIGHT) / 100;
+}
+
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
+    //height:  getCanvasHeight(),
 }
 
 window.addEventListener('resize', () =>  {
@@ -172,17 +201,10 @@ window.addEventListener('resize', () =>  {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-const INIT_CAMERA_POSITION_X = 0
-const INIT_CAMERA_POSITION_Y = 0
-const INIT_CAMERA_POSITION_Z = 30
-
-const READY_CAMERA_POSITION_X = 0
-const READY_CAMERA_POSITION_Y = 0.9
-const READY_CAMERA_POSITION_Z = 3.5
-
-camera.position.x = INIT_CAMERA_POSITION_X
-camera.position.y = INIT_CAMERA_POSITION_Y
-camera.position.z = INIT_CAMERA_POSITION_Z
+const INIT_CAMERA_POSITION_Y = 1.5
+camera.position.x = 2
+camera.position.y = 1.5
+camera.position.z = 3
 scene.add(camera)
 
 /**
@@ -200,51 +222,40 @@ renderer.setClearColor(0x1A1A1A);
  * Animate
  */
 const clock = new THREE.Clock()
-let firstRender = true;
 
 const tick = () =>  {
     const elapsedTime = clock.getElapsedTime()
 
+    //Update the camera
     points.rotation.y = elapsedTime*0.08
     bgStars.rotation.y = - elapsedTime*0.02
 
+
+    // Render
     renderer.render(scene, camera)
 
+    // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
 
 tick()
 
 /**
- * Animate intro
- */
-function animateCamera() {
-    const duration = 3;
-    gsap.fromTo(camera.position,
-      { x: INIT_CAMERA_POSITION_X, y: INIT_CAMERA_POSITION_Y, z: INIT_CAMERA_POSITION_Z },
-      { x: READY_CAMERA_POSITION_X, y: READY_CAMERA_POSITION_Y, z: READY_CAMERA_POSITION_Z, duration, ease: "power4.out" }
-    );
-}
-
-/**
  * Animate in scroll
  */
-window.addEventListener("scroll", (ev) => {
-    camera.position.y = READY_CAMERA_POSITION_Y + window.scrollY / -350.0;
-});
+/*window.addEventListener("scroll", (ev) => {
+    camera.position.y = INIT_CAMERA_POSITION_Y + window.scrollY / -270.0;
+});*/
+
 
 /**
- * Force page scroll position to top at page refresh in HTML
+ * Parallax effect
  */
-window.onbeforeunload =  () => {
-    window.scrollTo(0, 0);
-}
-
-/**
- * Init all modules
- */
-window.addEventListener('load', function() {
-    animateCamera();
-    initAnimations()
+/*
+const multiplier = 0.2;
+window.addEventListener('scroll', () => {
+    const GalaxyHero = document.getElementById('heroText');
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    GalaxyHero.style.transform = `translateY(${scrollTop * multiplier}px)`;
 });
-
+*/
